@@ -1,0 +1,56 @@
+class Hashtable:
+    delData = (None,None)
+    def __init__(self,size,num):
+        self.size = size
+        self.num = num
+        self.table = [None]*self.size
+    def hash1(self,key):
+        return key % self.size
+    def hash2(self,key):
+        return self.num - (key % self.num)
+    def insert(self,key,val):
+        idx1 = self.hash1(key)
+        if self.table[idx1] is None or self.table[idx1] == self.delData:
+            self.table[idx1] = (key,val)
+        else:
+            i = 1
+            idx2 = self.hash2(key)
+            while i < self.size:
+                idx = (idx1 + i*idx2) % self.size
+                if self.table[idx] is None or self.table[idx] == self.delData:
+                    self.table[idx] = (key,val)
+                    return 
+                i += 1
+    def delete(self,key):
+        idx1 = self.hash1(key)
+        if self.table[idx1] is not None and self.table[idx1][0] == key:
+            self.table[idx1] = self.delData
+        else:
+            i = 1
+            idx2 = self.hash2(key)
+            while i < self.size:
+                idx = (idx1 + i*idx2) % self.size
+                if self.table[idx] is None:
+                    return False
+                if self.table[idx][0] == key:
+                    self.table[idx] = self.delData
+                    return True
+                i += 1
+        return None
+    def display(self):
+        for i in range(self.size):
+            if self.table[i] is None:
+                print(f'{i}:[]')
+            elif self.table[i] == self.delData:
+                print(f'{i}:[Deleted]')
+            else:
+                print(f'{i}:{self.table[i]}')
+l = Hashtable(10,7)
+l.insert(10,'A')
+l.insert(43,'B')
+l.insert(63,'C')
+l.insert(20,'D')
+l.insert(56,'E')
+l.insert(45,'F')
+l.insert(55,'G')
+l.display()
