@@ -1,42 +1,43 @@
-class Hashtable:
-    delData = (None,None)
-    def __init__(self,size,num):
+class Hashtable: #class 
+    delData = (None,None) #PlaceHolder for deletion
+    def __init__(self,size,num): #intializing size of hashtable 
         self.size = size
         self.num = num
         self.table = [None]*self.size
-    def hash1(self,key):
+    def hash1(self,key): #first hash value
         return key % self.size
-    def hash2(self,key):
+    def hash2(self,key): #second hash value
         return self.num - (key % self.num)
     def insert(self,key,val):
-        idx1 = self.hash1(key)
+        idx1 = self.hash1(key) #creating 1st index
         if self.table[idx1] is None or self.table[idx1] == self.delData:
             self.table[idx1] = (key,val)
         else:
-            i = 1
-            idx2 = self.hash2(key)
-            while i < self.size:
+            i = 1 #collision i = 1
+            idx2 = self.hash2(key) #creating 2nd index
+            while i < self.size: #iterating till condition met 
                 idx = (idx1 + i*idx2) % self.size
                 if self.table[idx] is None or self.table[idx] == self.delData:
                     self.table[idx] = (key,val)
                     return 
                 i += 1
-    def delete(self,key):
-        idx1 = self.hash1(key)
-        if self.table[idx1] is not None and self.table[idx1][0] == key:
+    def delete(self,key): 
+        idx1 = self.hash1(key) #creating 1st index
+        if self.table[idx1] is not None and self.table[idx1][0] == key: #if index of table equals to key then delete
             self.table[idx1] = self.delData
         else:
             i = 1
-            idx2 = self.hash2(key)
-            while i < self.size:
+            idx2 = self.hash2(key) #creating 2nd index
+            while i < self.size: #iterating till condition met
                 idx = (idx1 + i*idx2) % self.size
                 if self.table[idx] is None:
                     return False
-                if self.table[idx][0] == key:
+                if self.table[idx][0] == key: #if index of table equals to key then delete
                     self.table[idx] = self.delData
                     return True
                 i += 1
         return None
+    #displaying hashtable
     def display(self):
         for i in range(self.size):
             if self.table[i] is None:
